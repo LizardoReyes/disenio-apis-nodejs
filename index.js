@@ -7,15 +7,16 @@ const mongoose = require("mongoose");
 const errorHandler = require("./api/libs/errorHandler")
 require("dotenv").config()
 
-mongoose.connect("mongodb://localhost/disenio-api-nodejs", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-})
-mongoose.connection.on("error", e => {
-    logger.error("Fallo la conexion a mongodb")
-    process.exit(1)
-})
+mongoose.connect("mongodb://localhost/disenio-api-nodejs")
+
+mongoose.connection.on("connected", () => {
+  console.log("MongoDB conectado correctamente");
+});
+
+mongoose.connection.on("error", err => {
+  console.error("Fallo la conexión a MongoDB", err);
+  process.exit(1);
+});
 
 const productsRouter = require('./api/resources/products/products.routes');
 const usersRouter = require("./api/resources/users/users.routes")
